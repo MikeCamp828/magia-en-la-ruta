@@ -1,4 +1,4 @@
-function Navbar({ navegar, paginaActual }) {
+function Navbar({ navegar, paginaActual, usuario, onLogout }) {
   return (
     <nav className="navbar">
       <div className="navbar-logo" onClick={() => navegar("home")}>
@@ -27,6 +27,23 @@ function Navbar({ navegar, paginaActual }) {
         >
           Planear ruta
         </button>
+
+        {usuario ? (
+          <>
+            <span className="user-pill">Hola, {usuario.nombre}</span>
+
+            <button onClick={onLogout}>
+              Salir
+            </button>
+          </>
+        ) : (
+          <button
+            className={paginaActual === "login" ? "nav-active" : ""}
+            onClick={() => navegar("login")}
+          >
+            Login
+          </button>
+        )}
       </div>
     </nav>
   );

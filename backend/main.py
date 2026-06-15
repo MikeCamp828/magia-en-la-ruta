@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.db.session import get_db
+from app.routers import auth_router
 from app.routers import destinos_router
 from app.routers import recomendaciones_router
 from app.routers import rutas_router
@@ -56,6 +57,12 @@ def health_check(db: Session = Depends(get_db)):
             "detalle": str(error)
         }
 
+
+app.include_router(
+    auth_router.router,
+    prefix="/api/auth",
+    tags=["Autenticación"]
+)
 
 app.include_router(
     destinos_router.router,
