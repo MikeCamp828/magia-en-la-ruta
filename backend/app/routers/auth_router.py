@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.core.security import (
@@ -18,6 +19,7 @@ from app.schemas.usuario_schema import (
 
 
 router = APIRouter()
+security = HTTPBearer()
 
 
 def obtener_usuario_por_correo(db: Session, correo: str):
@@ -25,30 +27,15 @@ def obtener_usuario_por_correo(db: Session, correo: str):
 
 
 def obtener_usuario_actual(
-    authorization: str | None = Header(default=None),
+    credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
 ):
     """
-    Lee el token enviado en el header Authorization.
-    Formato esperado:
-    Bearer token_aqui
+    Obtiene el usuario autenticado usando un token Bearer.
     """
 
-    if not authorization:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="No se envió token de autenticación"
-        )
+    token = credentials.credentials
 
-    partes = authorization.split()
-
-    if len(partes) != 2 or partes[0].lower() != "bearer":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Formato de token inválido"
-        )
-
-    token = partes[1]
     correo = obtener_correo_desde_token(token)
 
     if not correo:

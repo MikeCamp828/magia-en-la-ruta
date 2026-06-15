@@ -2,6 +2,7 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+from app.routers import opiniones_router
 
 from app.core.config import settings
 from app.db.session import get_db
@@ -80,4 +81,10 @@ app.include_router(
     rutas_router.router,
     prefix="/api/rutas",
     tags=["Rutas"]
+)
+
+app.include_router(
+    opiniones_router.router,
+    prefix="/api/opiniones",
+    tags=["Opiniones"]
 )
