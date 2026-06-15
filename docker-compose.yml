@@ -1,0 +1,33 @@
+
+
+services:
+  db:
+    image: postgres:16
+    container_name: magia_ruta_db
+    restart: always
+    environment:
+      POSTGRES_DB: magia_ruta_db
+      POSTGRES_USER: magia_user
+      POSTGRES_PASSWORD: magia_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - magia_ruta_postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seed_destinos.sql:/docker-entrypoint-initdb.d/02_seed_destinos.sql
+      - ./database/seed_costos.sql:/docker-entrypoint-initdb.d/03_seed_costos.sql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: magia_ruta_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@magia.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+volumes:
+  magia_ruta_postgres_data:
