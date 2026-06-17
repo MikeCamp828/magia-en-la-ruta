@@ -1,10 +1,13 @@
-function DestinationCard({ destino }) {
+function DestinationCard({ destino, onVerDetalle }) {
   return (
     <article className="destination-card">
       <div
         className="destination-image"
         style={{
-          backgroundImage: `url(${destino.imagen_url || "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"})`
+          backgroundImage: `url(${
+            destino.imagen_url ||
+            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+          })`
         }}
       />
 
@@ -22,6 +25,13 @@ function DestinationCard({ destino }) {
           <strong>${Number(destino.costo_estimado).toFixed(0)} MXN</strong>
           <span>{Number(destino.tiempo_visita_horas).toFixed(1)} h visita</span>
         </div>
+
+        <button
+          className="btn-secondary destination-button"
+          onClick={() => onVerDetalle(destino)}
+        >
+          Ver opiniones
+        </button>
       </div>
     </article>
   );

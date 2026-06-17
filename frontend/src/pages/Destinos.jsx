@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import apiClient from "../api/apiClient";
 import DestinationCard from "../components/DestinationCard";
 
-function Destinos() {
+function Destinos({ onVerDetalle }) {
   const [destinos, setDestinos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
   const [estado, setEstado] = useState("");
@@ -47,8 +47,8 @@ function Destinos() {
       <section className="page-header">
         <h1>Destinos mágicos</h1>
         <p>
-          Explora algunos destinos turísticos registrados en la base de datos de
-          Magia en la Ruta.
+          Explora destinos turísticos registrados en la base de datos y consulta
+          las opiniones de otros viajeros.
         </p>
       </section>
 
@@ -92,7 +92,11 @@ function Destinos() {
 
       <section className="destinos-grid">
         {destinos.map((destino) => (
-          <DestinationCard key={destino.id_destino} destino={destino} />
+          <DestinationCard
+            key={destino.id_destino}
+            destino={destino}
+            onVerDetalle={onVerDetalle}
+          />
         ))}
       </section>
     </main>

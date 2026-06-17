@@ -6,11 +6,13 @@ import Destinos from "./pages/Destinos";
 import PlanearRuta from "./pages/PlanearRuta";
 import ResultadoRuta from "./pages/ResultadoRuta";
 import Login from "./pages/Login";
+import DetalleDestino from "./pages/DetalleDestino";
 
 function App() {
   const [paginaActual, setPaginaActual] = useState("home");
   const [rutaGenerada, setRutaGenerada] = useState(null);
   const [usuario, setUsuario] = useState(null);
+  const [destinoSeleccionado, setDestinoSeleccionado] = useState(null);
 
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem("magia_usuario");
@@ -40,6 +42,11 @@ function App() {
     setPaginaActual("home");
   };
 
+  const verDetalleDestino = (destino) => {
+    setDestinoSeleccionado(destino);
+    setPaginaActual("detalleDestino");
+  };
+
   return (
     <>
       <Navbar
@@ -51,7 +58,17 @@ function App() {
 
       {paginaActual === "home" && <Home navegar={navegar} />}
 
-      {paginaActual === "destinos" && <Destinos />}
+      {paginaActual === "destinos" && (
+        <Destinos onVerDetalle={verDetalleDestino} />
+      )}
+
+      {paginaActual === "detalleDestino" && (
+        <DetalleDestino
+          destino={destinoSeleccionado}
+          usuario={usuario}
+          navegar={navegar}
+        />
+      )}
 
       {paginaActual === "planear" && (
         <PlanearRuta onRutaGenerada={manejarRutaGenerada} />
